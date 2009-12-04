@@ -59,8 +59,6 @@ object Main {
       provider.start
     }
 
-    // TODO: represent actual resource instances somehow
-
     println("started")
   }
 }
