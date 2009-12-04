@@ -34,6 +34,8 @@ class MetricMonitorTest {
   def allDependenciesReceived() {
     //    new MetricMonitor()
     fail("TODO")
+
+    // TODO: write tests to see that metrics are received when expected, also when metrics arrive late etc... maybe write a "metris available notification messge listener" which can catch all these messages automatically and filter out the interesting ones?
   }
 
 }
