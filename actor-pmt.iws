@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager" verified="true">
-    <list default="true" id="b8ae0481-fe31-45e9-a13c-c094ff15bbe5" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/actor-pmt.iml" afterPath="" />
+    <list default="true" readonly="true" id="b8ae0481-fe31-45e9-a13c-c094ff15bbe5" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MonitorAgent.scala" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/actor-pmt.iws" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/actor-pmt.ipr" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/Main.scala" afterPath="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/Main.scala" />
     </list>
-    <ignored path="actor-pmt.iws" />
     <ignored path=".idea/workspace.xml" />
+    <ignored path="actor-pmt.iws" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,43 +67,25 @@
       <file leaf-file-name="MetricMonitor.scala" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricMonitor.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="13" selection-start="1277" selection-end="1277" vertical-scroll-proportion="0.0">
+            <state line="8" column="118" selection-start="310" selection-end="310" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MetricFileSystem.scala" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricFileSystem.scala">
+      <file leaf-file-name="MonitorRepository.scala" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MonitorRepository.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="36" selection-start="237" selection-end="237" vertical-scroll-proportion="0.0">
+            <state line="24" column="3" selection-start="927" selection-end="927" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MetricProvider.scala" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricProvider.scala">
+      <file leaf-file-name="Main.scala" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/Main.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="3" selection-start="580" selection-end="580" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TODO.txt" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/TODO.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="0" selection-start="386" selection-end="386" vertical-scroll-proportion="0.15300547">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MetricMonitorTest.scala" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/scala/be/jvb/actorpmt/MetricMonitorTest.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="4" selection-start="1143" selection-end="1143" vertical-scroll-proportion="0.0">
+            <state line="36" column="8" selection-start="1375" selection-end="1375" vertical-scroll-proportion="0.73960215">
               <folding />
             </state>
           </provider>
@@ -126,20 +108,22 @@
         <option value="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/Metrics.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricMessage.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/ManagedObjectName.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricProviderScanner.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricMonitor.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/Main.scala" />
         <option value="$PROJECT_DIR$/src/test/scala/be/jvb/actorpmt/MetricMonitorTest.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricProvider.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricFileSystem.scala" />
         <option value="$PROJECT_DIR$/TODO.txt" />
+        <option value="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MonitorRepository.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricMonitor.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricProvider.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricProviderScanner.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MonitorAgent.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/Main.scala" />
       </list>
     </option>
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHome" value="/opt/javatools/apache-maven" />
+        <option name="mavenHome" value="$PROJECT_DIR$/../../../javatools/apache-maven" />
       </MavenGeneralSettings>
     </option>
     <option name="importingSettings">
@@ -147,6 +131,9 @@
         <option name="importAutomatically" value="true" />
       </MavenImportingSettings>
     </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="jreName" value="1.6 (jrockit)" />
   </component>
   <component name="ModuleEditorState">
     <option name="LAST_EDITED_MODULE_NAME" />
@@ -342,16 +329,14 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="actor-pmt" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -383,18 +368,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="actorpmt" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -430,25 +403,21 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Favorites" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="RunManagerConfig.showSettingsBeforeRunnig" value="false" />
-    <property name="options.lastSelected" value="MavenSettings" />
     <property name="MemberChooser.sorted" value="false" />
+    <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors.Scala" />
     <property name="recentsLimit" value="5" />
-    <property name="GoToClass.includeJavaFiles" value="false" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
     <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RunManager" selected="Application.Main">
@@ -859,19 +828,19 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="25" width="1682" height="996" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Dilbert" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32988507" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3993135" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="FindBugs-IDEA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32988507" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32528734" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32988507" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32528734" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32988507" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924587" sideWeight="0.66206896" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.329859" sideWeight="0.66206896" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.329859" sideWeight="0.6666667" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3264368" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -888,7 +857,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
-    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
     <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
@@ -897,7 +866,7 @@
     <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
     <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="more todo's" />
+    <option name="LAST_COMMIT_MESSAGE" value="cleanup main class and remove obsolete code" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -910,30 +879,13 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="cleanup" />
-    <MESSAGE value="added prototype metric file system implementation and save metrics to disk in provider whenever they are available (same for source providers and monitors... no special cache required for providers)" />
-    <MESSAGE value="added general todo list" />
-    <MESSAGE value="more todo's" />
+    <MESSAGE value="use a repository of monitors on which monitors and providers depend to find other monitors" />
+    <MESSAGE value="cleanup main class and remove obsolete code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$MAVEN_REPOSITORY$/joda-time/joda-time/1.6/joda-time-1.6-sources.jar!/org/joda/time/Interval.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="19" selection-start="1842" selection-end="1842" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MonitorRepository.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="6" selection-start="58" selection-end="58" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MonitorAgent.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="27" selection-start="52" selection-end="52" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricMessage.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="47" selection-start="144" selection-end="144" vertical-scroll-proportion="0.12750456" />
@@ -949,150 +901,119 @@
         <state line="35" column="36" selection-start="1846" selection-end="1846" vertical-scroll-proportion="0.33333334" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricProviderScanner.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="131" selection-start="338" selection-end="338" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/Main.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="38" selection-start="890" selection-end="890" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricDefinition.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="0" selection-start="1374" selection-end="1374" vertical-scroll-proportion="0.5241546">
-          <folding />
-        </state>
+        <state line="31" column="0" selection-start="1374" selection-end="1374" vertical-scroll-proportion="0.5241546" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/Metrics.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="31" selection-start="204" selection-end="204" vertical-scroll-proportion="0.11835749">
-          <folding />
-        </state>
+        <state line="7" column="31" selection-start="204" selection-end="204" vertical-scroll-proportion="0.11835749" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/ManagedObjectName.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="11" selection-start="105" selection-end="105" vertical-scroll-proportion="0.12658228">
-          <folding />
-        </state>
+        <state line="5" column="11" selection-start="105" selection-end="105" vertical-scroll-proportion="0.12658228" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricFileSystem.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="36" selection-start="237" selection-end="237" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="10" column="36" selection-start="237" selection-end="237" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricProvider.scala">
+    <entry file="file://$PROJECT_DIR$/TODO.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="3" selection-start="580" selection-end="580" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="6" column="0" selection-start="386" selection-end="386" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/scala/be/jvb/actorpmt/MetricMonitorTest.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="4" selection-start="1143" selection-end="1143" vertical-scroll-proportion="0.0">
+        <state line="13" column="48" selection-start="281" selection-end="281" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.7.5/scala-library-2.7.5-sources.jar!/scala/actors/Actor.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="572" column="6" selection-start="16618" selection-end="16618" vertical-scroll-proportion="0.33273056">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MonitorRepository.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="3" selection-start="927" selection-end="927" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricMonitor.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="13" selection-start="1277" selection-end="1277" vertical-scroll-proportion="0.0">
+        <state line="8" column="118" selection-start="310" selection-end="310" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TODO.txt">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricProvider.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="0" selection-start="386" selection-end="386" vertical-scroll-proportion="0.15300547">
+        <state line="15" column="10" selection-start="424" selection-end="424" vertical-scroll-proportion="0.37974682">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/MetricProviderScanner.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="35" selection-start="288" selection-end="288" vertical-scroll-proportion="0.278481">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/be/jvb/actorpmt/Main.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="8" selection-start="1375" selection-end="1375" vertical-scroll-proportion="0.73960215">
           <folding />
         </state>
       </provider>
     </entry>
   </component>
   <component name="masterDetails">
-    <option name="states">
-      <map>
-        <entry key="Errors.UI">
-          <value>
-            <UIState>
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <UIState>
+          <splitter-proportions>
+            <SplitterProportionsDataImpl />
+          </splitter-proportions>
+          <settings />
+        </UIState>
+      </state>
+      <state key="Copyright.UI">
+        <UIState>
+          <splitter-proportions>
+            <SplitterProportionsDataImpl />
+          </splitter-proportions>
+        </UIState>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <UIState>
+          <splitter-proportions>
+            <SplitterProportionsDataImpl>
               <option name="proportions">
-                <SplitterProportionsDataImpl />
+                <list>
+                  <option value="0.2" />
+                </list>
               </option>
-            </UIState>
-          </value>
-        </entry>
-        <entry key="ProjectJDKs.UI">
-          <value>
-            <UIState>
-              <option name="proportions">
-                <SplitterProportionsDataImpl>
-                  <option name="proportions">
-                    <list>
-                      <option value="0.2" />
-                    </list>
-                  </option>
-                </SplitterProportionsDataImpl>
-              </option>
-              <option name="lastEditedConfigurable" value="1.6" />
-            </UIState>
-          </value>
-        </entry>
-        <entry key="ScopeChooserConfigurable.UI">
-          <value>
-            <UIState>
-              <option name="proportions">
-                <SplitterProportionsDataImpl />
-              </option>
-            </UIState>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="myStates">
-      <map>
-        <entry key="Errors.UI">
-          <value>
-            <UIState>
-              <option name="proportions">
-                <SplitterProportionsDataImpl />
-              </option>
-            </UIState>
-          </value>
-        </entry>
-        <entry key="ProjectJDKs.UI">
-          <value>
-            <UIState>
-              <option name="proportions">
-                <SplitterProportionsDataImpl>
-                  <option name="proportions">
-                    <list>
-                      <option value="0.2" />
-                    </list>
-                  </option>
-                </SplitterProportionsDataImpl>
-              </option>
-              <option name="lastEditedConfigurable" value="1.6" />
-            </UIState>
-          </value>
-        </entry>
-        <entry key="ScopeChooserConfigurable.UI">
-          <value>
-            <UIState>
-              <option name="proportions">
-                <SplitterProportionsDataImpl />
-              </option>
-            </UIState>
-          </value>
-        </entry>
-      </map>
-    </option>
+            </SplitterProportionsDataImpl>
+          </splitter-proportions>
+          <last-edited>1.6</last-edited>
+        </UIState>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <UIState>
+          <splitter-proportions>
+            <SplitterProportionsDataImpl />
+          </splitter-proportions>
+          <settings />
+        </UIState>
+      </state>
+    </states>
   </component>
 </project>
 

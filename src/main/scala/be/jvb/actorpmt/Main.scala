@@ -1,9 +1,6 @@
 package be.jvb.actorpmt
 
 import org.joda.time.Duration
-import org.joda.time.format.ISOPeriodFormat
-import scala.collection._
-
 object Main {
   def main(args: Array[String]) {
     println("starting")
@@ -17,36 +14,46 @@ object Main {
     val m6 = new MetricDefinition("m6", new Duration(2000L), m4 :: Nil)
     val m7 = new MetricDefinition("m7", new Duration(5000L), m1 :: Nil)
 
-//    val metricDefinition = m1 :: m2 :: m3 :: m4 :: m5 :: m6 :: Nil
-    val metricDefinition = m1 :: m2 :: m3 :: Nil
-
-    // make monitor for all derived metric definitions
-    val derivedMetrics = metricDefinition.filter(mDefinition => !mDefinition.dependencies.isEmpty)
+    //    val metricDefinition = m1 :: m2 :: m3 :: m4 :: m5 :: m6 :: Nil
+    val metricsConfiguration = m1 :: m2 :: m3 :: Nil
 
     // TODO: find a way to "dependency inject" this where it is required (trait?)
-    val repository = new MonitorRepository()
+    val monitors = makeMonitors(filterOutDerivedMetricDefinitions(metricsConfiguration))
 
-    for (derivedMetric <- derivedMetrics) {
-      val monitor = new MetricMonitor(derivedMetric, repository)
-      repository.register(monitor)
-    }
-
-    // make providers for all source metric definitions
-    val sourceMetrics = metricDefinition.filter(mDefinition => mDefinition.dependencies.isEmpty)
-    val providersByProvidedMetric = new mutable.HashMap[MetricDefinition, MetricProviderScanner]
-    for (sourceMetric <- sourceMetrics) {
-      // find monitors depending on this source metric
-      val dependingMonitors = repository.findMonitorsDependingOn(sourceMetric)
-      // add provider to the collection of providers
-      providersByProvidedMetric += (sourceMetric -> new MetricProviderScanner(sourceMetric, dependingMonitors))
-    }
+    val providers = makeProviders(monitors, filterOutSourceMetricDefinitions(metricsConfiguration))
 
     // start monitors
-    repository.allMonitors.foreach(monitor => monitor.start)
+    monitors.allMonitors.foreach(monitor => monitor.start)
 
     // start providers
-    providersByProvidedMetric.values.foreach(provider => provider.start)
+    providers.foreach(provider => provider.start)
 
     println("started")
+  }
+
+  // TODO: move to monitor/provider agent?
+
+  def filterOutDerivedMetricDefinitions(allMetricDefinitions: List[MetricDefinition]) = {
+    allMetricDefinitions.filter(mDefinition => !mDefinition.dependencies.isEmpty)
+  }
+
+  def filterOutSourceMetricDefinitions(allMetricDefinitions: List[MetricDefinition]) = {
+    allMetricDefinitions.filter(mDefinition => mDefinition.dependencies.isEmpty)
+  }
+
+  def makeMonitors(derivedMetricDefinitions: List[MetricDefinition]): MonitorRepository = {
+    val repository = new MonitorRepository
+
+    for (derivedMetricDefinition <- derivedMetricDefinitions) {
+      repository.register(new MetricMonitor(derivedMetricDefinition, repository))
+    }
+
+    return repository
+  }
+
+  def makeProviders(monitors: MonitorRepository, sourceMetricDefinitions: List[MetricDefinition]): List[MetricProviderScanner] = {
+    for (sourceMetricDefinition <- sourceMetricDefinitions) yield {
+      new MetricProviderScanner(sourceMetricDefinition, monitors.findMonitorsDependingOn(sourceMetricDefinition))
+    }
   }
 }
