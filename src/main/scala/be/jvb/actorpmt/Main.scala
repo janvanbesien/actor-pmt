@@ -20,20 +20,15 @@ object Main {
 //    val metricDefinition = m1 :: m2 :: m3 :: m4 :: m5 :: m6 :: Nil
     val metricDefinition = m1 :: m2 :: m3 :: Nil
 
-    // TODO: monitors need to access monitors that depend on them, just like providers do... It might be nicer to have a repostory of providers and monitors which can be used by providers and monitors to look up all this stuff in stead of building it like currently done on the fly and passing in the mutable repo to every monitor when creating them...
-
     // make monitor for all derived metric definitions
     val derivedMetrics = metricDefinition.filter(mDefinition => !mDefinition.dependencies.isEmpty)
-    // map of all the monitors per dependency (a dependency can be in multiple monitors -> multimap)
-    val monitorsByDependencies: mutable.MultiMap[MetricDefinition, MetricMonitor] = new mutable.HashMap[MetricDefinition, mutable.Set[MetricMonitor]] with mutable.MultiMap[MetricDefinition, MetricMonitor]
-    // simple list of all the monitors
-    val monitors: mutable.ListBuffer[MetricMonitor] = new mutable.ListBuffer
+
+    // TODO: find a way to "dependency inject" this where it is required (trait?)
+    val repository = new MonitorRepository()
+
     for (derivedMetric <- derivedMetrics) {
-      val monitor = new MetricMonitor(derivedMetric, monitorsByDependencies)
-      monitors.append(monitor)
-      for (dependency <- derivedMetric.dependencies) {
-        monitorsByDependencies.add(dependency, monitor)
-      }
+      val monitor = new MetricMonitor(derivedMetric, repository)
+      repository.register(monitor)
     }
 
     // make providers for all source metric definitions
@@ -41,23 +36,16 @@ object Main {
     val providersByProvidedMetric = new mutable.HashMap[MetricDefinition, MetricProviderScanner]
     for (sourceMetric <- sourceMetrics) {
       // find monitors depending on this source metric
-      val dependingMonitors = monitorsByDependencies.get(sourceMetric) match {
-        case Some(monitors) => monitors.toList
-        case None => Nil
-      }
+      val dependingMonitors = repository.findMonitorsDependingOn(sourceMetric)
       // add provider to the collection of providers
       providersByProvidedMetric += (sourceMetric -> new MetricProviderScanner(sourceMetric, dependingMonitors))
     }
 
     // start monitors
-    for (monitor <- monitors) {
-      monitor.start
-    }
+    repository.allMonitors.foreach(monitor => monitor.start)
 
     // start providers
-    for (provider <- providersByProvidedMetric.values) {
-      provider.start
-    }
+    providersByProvidedMetric.values.foreach(provider => provider.start)
 
     println("started")
   }

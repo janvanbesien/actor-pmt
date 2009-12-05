@@ -6,18 +6,20 @@ import org.joda.time.{Duration, DateTime, Interval}
 
 /**
  * Regularly scans a metric definition and provides the metrics when available
+ *
+ * TODO: fetch dependants from repository?
  */
-class MetricProviderScanner(val sourceMetricDefinition: MetricDefinition, val dependants: List[MetricMonitor]) extends Actor with MetricProvider {
+class MetricProviderScanner(val metricDefinition: MetricDefinition, val dependants: List[MetricMonitor]) extends Actor with MetricProvider {
 
   def act() {
     loop {
-      Thread.sleep(sourceMetricDefinition.granularity.getMillis) // TODO: use scheduler
+      Thread.sleep(metricDefinition.granularity.getMillis) // TODO: use scheduler
       println
 
-      val providerInterval = calculateProviderInterval(sourceMetricDefinition.granularity)
+      val providerInterval = calculateProviderInterval(metricDefinition.granularity)
 
       // do as if we generated a few metrics
-      val generatedMetrics = new Metrics(sourceMetricDefinition,
+      val generatedMetrics = new Metrics(metricDefinition,
                                          Map(ManagedObjectName("sit1") -> 1.0, ManagedObjectName("sit2") -> 2.0),
                                          providerInterval)
 
@@ -26,8 +28,8 @@ class MetricProviderScanner(val sourceMetricDefinition: MetricDefinition, val de
   }
 
   def calculateProviderInterval(sourceMetricGranularity: Duration) : Interval = {
-    val endOfProviderInterval = DateTimeUtilities.alignOnPrevious(sourceMetricDefinition.granularity, now)
-    return new Interval(endOfProviderInterval.minus(sourceMetricDefinition.granularity), endOfProviderInterval)
+    val endOfProviderInterval = DateTimeUtilities.alignOnPrevious(metricDefinition.granularity, now)
+    return new Interval(endOfProviderInterval.minus(metricDefinition.granularity), endOfProviderInterval)
   }
 
   def now(): DateTime = new DateTime

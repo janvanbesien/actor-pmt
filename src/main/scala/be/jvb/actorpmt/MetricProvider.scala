@@ -4,14 +4,14 @@ package be.jvb.actorpmt
 import org.joda.time.{DateTime, Interval}
 
 trait MetricProvider {
-  val sourceMetricDefinition: MetricDefinition
+  val metricDefinition: MetricDefinition
 
   def dependants: List[MetricMonitor]
 
   val mfs = new MetricFileSystem
 
   def provideMetrics(time: DateTime, providedMetrics: Metrics) = {
-    println("provider [" + sourceMetricDefinition.name + "] provides metrics at [" + time + "] for interval [" + providedMetrics.interval + "]")
+    println("provider [" + metricDefinition.name + "] provides metrics at [" + time + "] for interval [" + providedMetrics.interval + "]")
 
     saveMetrics(providedMetrics) //maybe do this asynchronously in an actor which processes all the saves?
     notifyDependants(time, providedMetrics)
