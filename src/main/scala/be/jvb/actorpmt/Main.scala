@@ -17,43 +17,14 @@ object Main {
     //    val metricDefinition = m1 :: m2 :: m3 :: m4 :: m5 :: m6 :: Nil
     val metricsConfiguration = m1 :: m2 :: m3 :: Nil
 
-    // TODO: find a way to "dependency inject" this where it is required (trait?)
-    val monitors = makeMonitors(filterOutDerivedMetricDefinitions(metricsConfiguration))
+    val monitorAgent: MonitorAgent = new MonitorAgent(metricsConfiguration)
+    val monitors: MonitorRepository = monitorAgent.start
 
-    val providers = makeProviders(monitors, filterOutSourceMetricDefinitions(metricsConfiguration))
-
-    // start monitors
-    monitors.allMonitors.foreach(monitor => monitor.start)
-
-    // start providers
-    providers.foreach(provider => provider.start)
+    val providerAgent: ProviderAgent = new ProviderAgent(metricsConfiguration, monitors)
+    providerAgent.start
 
     println("started")
   }
 
-  // TODO: move to monitor/provider agent?
 
-  def filterOutDerivedMetricDefinitions(allMetricDefinitions: List[MetricDefinition]) = {
-    allMetricDefinitions.filter(mDefinition => !mDefinition.dependencies.isEmpty)
-  }
-
-  def filterOutSourceMetricDefinitions(allMetricDefinitions: List[MetricDefinition]) = {
-    allMetricDefinitions.filter(mDefinition => mDefinition.dependencies.isEmpty)
-  }
-
-  def makeMonitors(derivedMetricDefinitions: List[MetricDefinition]): MonitorRepository = {
-    val repository = new MonitorRepository
-
-    for (derivedMetricDefinition <- derivedMetricDefinitions) {
-      repository.register(new MetricMonitor(derivedMetricDefinition, repository))
-    }
-
-    return repository
-  }
-
-  def makeProviders(monitors: MonitorRepository, sourceMetricDefinitions: List[MetricDefinition]): List[MetricProviderScanner] = {
-    for (sourceMetricDefinition <- sourceMetricDefinitions) yield {
-      new MetricProviderScanner(sourceMetricDefinition, monitors.findMonitorsDependingOn(sourceMetricDefinition))
-    }
-  }
 }
