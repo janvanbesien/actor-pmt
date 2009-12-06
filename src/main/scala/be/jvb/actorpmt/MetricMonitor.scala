@@ -1,11 +1,13 @@
 package be.jvb.actorpmt
 
-import actors.Actor
-import actors.Actor._
 import scala.collection._
 import org.scala_tools.time.Imports._
 
-class MetricMonitor(val metricDefinition: MetricDefinition, val repository: MonitorRepository) extends Actor with MetricProvider
+/**
+ * A monitor is a provider listener (and calculates derived metric when receiving metrics from a provider) and a provider in itself
+ * (providing the calculated derived metrics to other monitors)
+ */
+class MetricMonitor(val metricDefinition: MetricDefinition, val repository: MonitorRepository) extends ProviderListener with MetricProvider
 {
   /**keep a collection of all received metrics, per monitor interval they are accounted in (multiple entries possible),
    * per metric definition we depend on */
@@ -22,15 +24,6 @@ class MetricMonitor(val metricDefinition: MetricDefinition, val repository: Moni
   def dependants = repository.findMonitorsDependingOn(metricDefinition)
 
   def dependencies = metricDefinition.dependencies
-
-  def act() {
-    loop {
-      react {
-        case m: MetricAvailableMessage => processMetricAvailableMessage(m)
-        case msg => println("received unkown message")
-      }
-    }
-  }
 
   def processMetricAvailableMessage(receivedMessage: MetricAvailableMessage) = {
     val alreadyReceivedMetricsOfThisType: mutable.MultiMap[Interval, Metrics] = received.get(receivedMessage.metrics.definition).get
@@ -88,9 +81,9 @@ class MetricMonitor(val metricDefinition: MetricDefinition, val repository: Moni
     return true
   }
 
-  def calculateMetrics(sourceMetrics:Metrics, accountingInterval:Interval) : Metrics = {
+  def calculateMetrics(sourceMetrics: Metrics, accountingInterval: Interval): Metrics = {
     // for now we just multiply every value by two
-    return new Metrics(metricDefinition, immutable.Map() ++ sourceMetrics.valuesPerManagedObject.map{case (key,value) => (key,value*2)}, accountingInterval)
+    return new Metrics(metricDefinition, immutable.Map() ++ sourceMetrics.valuesPerManagedObject.map {case (key, value) => (key, value * 2)}, accountingInterval)
   }
 }
 
