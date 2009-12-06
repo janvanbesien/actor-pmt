@@ -9,7 +9,6 @@ import org.junit.Assert._
  * @author <a href="mailto:jvb@newtec.eu">Jan Van Besien</a>
  */
 class MetricMonitorTest {
-  
   @Test
   def calculatedAllExpectedProviderIntervals() {
     val oneSecond = Duration.standardSeconds(1)
@@ -18,7 +17,7 @@ class MetricMonitorTest {
     val now = DateTimeUtilities.alignOnPrevious(oneSecond, new DateTime);
 
     assertEquals(
-      List(new Interval(now, oneSecond), new Interval(now.plus(oneSecond), oneSecond)), 
+      List(new Interval(now, oneSecond), new Interval(now.plus(oneSecond), oneSecond)),
       MetricMonitor.calculatedAllExpectedProviderIntervals(oneSecond, new Interval(now, twoSeconds)))
 
     assertEquals(
@@ -32,10 +31,43 @@ class MetricMonitorTest {
 
   @Test
   def allDependenciesReceived() {
-    //    new MetricMonitor()
-    fail("TODO")
+    val source = new MetricDefinition("source", Duration.standardMinutes(1), Nil)
+    val derived = new MetricDefinition("derived", Duration.standardMinutes(2), source :: Nil)
 
-    // TODO: write tests to see that metrics are received when expected, also when metrics arrive late etc... maybe write a "metris available notification messge listener" which can catch all these messages automatically and filter out the interesting ones?
+    val metricsConfiguration = source :: derived :: Nil
+
+    val monitorAgent: MonitorAgent = new MonitorAgent(metricsConfiguration)
+    val monitors: MonitorRepository = monitorAgent.start
+
+    // get the single monitor that was created
+    assertEquals(1, monitors.allMonitors.size)
+    val monitor = monitors.allMonitors.head
+
+    // pretend a source metric to be available
+    val now = new DateTime(2005, 05, 05, 10, 24, 0, 0) // somewhat random
+    monitor ! MetricAvailableMessage(
+      new Metrics(
+        source,
+        Map(ManagedObjectName("sit1") -> 1.0, ManagedObjectName("sit2") -> 2.0),
+        new Interval(now, source.granularity)), // at 24 minutes and something
+      new DateTime)
+
+    // monitor should not have provided anything, because not everything is received yet
+    //    fail("TODO")
+
+    // pretend another source metric to be available
+    monitor ! MetricAvailableMessage(
+      new Metrics(
+        source,
+        Map(ManagedObjectName("sit1") -> 1.0, ManagedObjectName("sit2") -> 2.0),
+        new Interval(now.plus(source.granularity), source.granularity)), // at 25 minutes and something
+      new DateTime)
+
+    // now the monitor should have provided a metric
+    Thread.sleep(1000)
+    println("done")
+
+    // TODO: make monitors extend a trait "monitor listener" which contains only the logic to see notifications from providers if metrics are available, and use another implementation of such a listener here in the test to catch the fact that our monitor has provided metrics... 
   }
 
 }

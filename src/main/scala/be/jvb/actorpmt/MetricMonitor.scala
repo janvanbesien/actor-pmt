@@ -2,7 +2,6 @@ package be.jvb.actorpmt
 
 import actors.Actor
 import actors.Actor._
-import org.joda.time.{Period, Duration, DateTime, Interval}
 import scala.collection._
 import org.scala_tools.time.Imports._
 
@@ -39,7 +38,7 @@ class MetricMonitor(val metricDefinition: MetricDefinition, val repository: Moni
     // TODO: cleanup old stuff from the received collection...
 
     val accountingInterval = calculateIntervalInWhichToAccount(receivedMessage)
-    println("monitor [" + metricDefinition + "] received something which it accounts in monitor interval [" + accountingInterval + "]")
+    println("monitor [" + metricDefinition + "] received something about [" + receivedMessage.metrics.interval + "] which it accounts in monitor interval [" + accountingInterval + "]")
 
     // store the metrics with other metrics of this type, in the corresponding monitor interval
     alreadyReceivedMetricsOfThisType.add(accountingInterval, receivedMessage.metrics)
