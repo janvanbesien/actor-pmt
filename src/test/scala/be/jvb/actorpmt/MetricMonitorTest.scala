@@ -2,36 +2,36 @@ package be.jvb.actorpmt
 
 
 import org.joda.time.{DateTime, Interval, Duration}
-import org.junit.Test
-import org.junit.Assert._
 import java.util.concurrent.{TimeUnit, CountDownLatch}
+import org.scalatest.FunSuite
+import org.junit.runner.RunWith
+import org.scalatest.junit.{JUnitRunner, JUnit3Suite}
 
 /**
  * @author <a href="mailto:jvb@newtec.eu">Jan Van Besien</a>
  */
-class MetricMonitorTest {
-  @Test
-  def calculatedAllExpectedProviderIntervals() {
+@RunWith(classOf[JUnitRunner])
+class MetricMonitorTest extends FunSuite {
+  test("calculatedAllExpectedProviderIntervals") {
     val oneSecond = Duration.standardSeconds(1)
     val twoSeconds = Duration.standardSeconds(2)
     val fourSeconds = Duration.standardSeconds(4)
     val now = DateTimeUtilities.alignOnPrevious(oneSecond, new DateTime);
 
-    assertEquals(
-      List(new Interval(now, oneSecond), new Interval(now.plus(oneSecond), oneSecond)),
-      MetricMonitor.calculatedAllExpectedProviderIntervals(oneSecond, new Interval(now, twoSeconds)))
+    expect(List(new Interval(now, oneSecond), new Interval(now.plus(oneSecond), oneSecond))) {
+      MetricMonitor.calculatedAllExpectedProviderIntervals(oneSecond, new Interval(now, twoSeconds))
+    }
 
-    assertEquals(
-      List(new Interval(now, twoSeconds)),
-      MetricMonitor.calculatedAllExpectedProviderIntervals(twoSeconds, new Interval(now, twoSeconds)))
+    expect(List(new Interval(now, twoSeconds))) {
+      MetricMonitor.calculatedAllExpectedProviderIntervals(twoSeconds, new Interval(now, twoSeconds))
+    }
 
-    assertEquals(
-      List(new Interval(now, twoSeconds), new Interval(now.plus(twoSeconds), twoSeconds)),
-      MetricMonitor.calculatedAllExpectedProviderIntervals(twoSeconds, new Interval(now, fourSeconds)))
+    expect(List(new Interval(now, twoSeconds), new Interval(now.plus(twoSeconds), twoSeconds))) {
+      MetricMonitor.calculatedAllExpectedProviderIntervals(twoSeconds, new Interval(now, fourSeconds))
+    }
   }
 
-  @Test
-  def allDependenciesReceived() {
+  test("allDependenciesReceived") {
     val source = new MetricDefinition("source", Duration.standardMinutes(1), Nil)
     val derived = new MetricDefinition("derived", Duration.standardMinutes(2), source :: Nil)
 
@@ -41,7 +41,7 @@ class MetricMonitorTest {
     val monitors: MonitorRepository = monitorAgent.start
 
     // get the single monitor that was created
-    assertEquals(1, monitors.allMonitors.size)
+    expect(1) {monitors.allMonitors.size}
     val monitor = monitors.allMonitors.head
 
     val expectedMetricIntervalReceived = new CountDownLatch(1)
@@ -84,7 +84,7 @@ class MetricMonitorTest {
     Thread.sleep(1000)
     println("done")
 
-    assertTrue(expectedMetricIntervalReceived.await(1, TimeUnit.SECONDS))
+    assert(expectedMetricIntervalReceived.await(1, TimeUnit.SECONDS))
   }
 
 }
