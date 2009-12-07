@@ -4,6 +4,7 @@ package be.jvb.actorpmt
 import org.joda.time.{DateTime, Interval, Duration}
 import org.junit.Test
 import org.junit.Assert._
+import java.util.concurrent.{TimeUnit, CountDownLatch}
 
 /**
  * @author <a href="mailto:jvb@newtec.eu">Jan Van Besien</a>
@@ -43,8 +44,24 @@ class MetricMonitorTest {
     assertEquals(1, monitors.allMonitors.size)
     val monitor = monitors.allMonitors.head
 
-    // pretend a source metric to be available
+    val expectedMetricIntervalReceived = new CountDownLatch(1)
+
     val now = new DateTime(2005, 05, 05, 10, 24, 0, 0) // somewhat random
+    val expectedInterval = new Interval(now, derived.granularity)
+
+    // register a listener with the monitor
+    class TestProviderListener extends ProviderListener {
+      def processMetricAvailableMessage(message: MetricAvailableMessage) = {
+        // TODO: assert that I come here once, and with the expected metrics (interval)
+        if (message.metrics.interval == expectedInterval)
+          expectedMetricIntervalReceived.countDown
+        else
+          fail("received unexpected metrics [" + message + "]")
+      }
+    }
+    monitor.registerDependant(new TestProviderListener().start)
+
+    // pretend a source metric to be available
     monitor ! MetricAvailableMessage(
       new Metrics(
         source,
@@ -67,7 +84,7 @@ class MetricMonitorTest {
     Thread.sleep(1000)
     println("done")
 
-    // TODO: make monitors extend a trait "monitor listener" which contains only the logic to see notifications from providers if metrics are available, and use another implementation of such a listener here in the test to catch the fact that our monitor has provided metrics... 
+    assertTrue(expectedMetricIntervalReceived.await(1, TimeUnit.SECONDS))
   }
 
 }

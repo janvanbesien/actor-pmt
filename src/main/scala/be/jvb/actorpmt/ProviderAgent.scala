@@ -11,7 +11,7 @@ class ProviderAgent(val metricsConfiguration:List[MetricDefinition], val monitor
 
   private def makeProviders(monitors: MonitorRepository, sourceMetricDefinitions: List[MetricDefinition]): List[MetricProviderScanner] = {
     for (sourceMetricDefinition <- sourceMetricDefinitions) yield {
-      new MetricProviderScanner(sourceMetricDefinition, monitors.findMonitorsDependingOn(sourceMetricDefinition))
+      new MetricProviderScanner(sourceMetricDefinition, monitors)
     }
   }
 

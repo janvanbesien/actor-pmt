@@ -7,6 +7,6 @@ import org.joda.time.Interval
  *
  * The interval should be "alligned"
  */
-class Metrics(val definition:MetricDefinition, val valuesPerManagedObject:Map[ManagedObjectName, Double], val interval:Interval) {
+case class Metrics(val definition:MetricDefinition, val valuesPerManagedObject:Map[ManagedObjectName, Double], val interval:Interval) {
     override def toString():String = definition + " metrics [#managedObjects=" + valuesPerManagedObject.size + ", interval=" + interval + "]"
 }

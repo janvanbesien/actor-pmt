@@ -6,10 +6,11 @@ import org.joda.time.{Duration, DateTime, Interval}
 
 /**
  * Regularly scans a metric definition and provides the metrics when available
- *
- * TODO: fetch dependants from repository?
  */
-class MetricProviderScanner(val metricDefinition: MetricDefinition, val dependants: List[MetricMonitor]) extends Actor with MetricProvider {
+class MetricProviderScanner(val metricDefinition: MetricDefinition, val monitors: MonitorRepository) extends Actor with MetricProvider {
+
+  // register all monitors depending on us as listeners of ourselves (TODO: is this the proper place to do it?)
+  monitors.findMonitorsDependingOn(metricDefinition).foreach(registerDependant(_))
 
   def act() {
     loop {

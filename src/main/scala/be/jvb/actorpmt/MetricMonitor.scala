@@ -11,17 +11,18 @@ class MetricMonitor(val metricDefinition: MetricDefinition, val repository: Moni
 {
   /**keep a collection of all received metrics, per monitor interval they are accounted in (multiple entries possible),
    * per metric definition we depend on */
-  private var received: mutable.Map[MetricDefinition, mutable.MultiMap[Interval, Metrics]] =
-  new mutable.HashMap[MetricDefinition, mutable.MultiMap[Interval, Metrics]]
+  private val received: mutable.Map[MetricDefinition, mutable.MultiMap[Interval, Metrics]] =
+    new mutable.HashMap[MetricDefinition, mutable.MultiMap[Interval, Metrics]]
 
   {
     // initialize the map with received metrics with an empty entry per metric definition that we depend on
     for (dependency <- metricDefinition.dependencies) {
       received.put(dependency, new mutable.HashMap[Interval, mutable.Set[Metrics]] with mutable.MultiMap[Interval, Metrics])
     }
-  }
 
-  def dependants = repository.findMonitorsDependingOn(metricDefinition)
+    // register all monitors depending on us as listeners of ourselves (TODO: is this the proper place to do it?)
+    repository.findMonitorsDependingOn(metricDefinition).foreach(registerDependant(_))
+  }
 
   def dependencies = metricDefinition.dependencies
 
