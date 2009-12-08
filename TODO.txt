@@ -1,5 +1,4 @@
 - add something like accumulated volume providers (w/o cache!)
 - repository idea also for providers?
-- cleanup of old metrics in the received metrics collection after some time
 - try to get some real performance measurements into it (and look at run time threading behavior with yourkit)
 - add real metric calculation based on actual formula's (parser/combinator?) or simply hard coded in metric definition
