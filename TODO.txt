@@ -2,3 +2,4 @@
 - repository idea also for providers?
 - try to get some real performance measurements into it (and look at run time threading behavior with yourkit)
 - add real metric calculation based on actual formula's (parser/combinator?) or simply hard coded in metric definition
+- read real metrics.xml or use a custom DSL ?

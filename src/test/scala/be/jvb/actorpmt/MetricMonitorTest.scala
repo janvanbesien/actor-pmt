@@ -14,7 +14,7 @@ class MetricMonitorTest extends FunSuite {
 
   test("calculated all expected provider intervals") {
     val definition: MetricDefinition = new MetricDefinition("test", Duration.standardMinutes(1), Nil)
-    val monitor: MetricMonitor = new MetricMonitor(definition, new MonitorRepository)
+    val monitor: MetricMonitor = new MetricMonitor(definition)
 
     val oneSecond = Duration.standardSeconds(1)
     val twoSeconds = Duration.standardSeconds(2)
@@ -37,7 +37,7 @@ class MetricMonitorTest extends FunSuite {
   test("flush time calculation - granularity = 1 minute") {
     val granularity = 1
     val definition: MetricDefinition = new MetricDefinition("test", Duration.standardMinutes(granularity), Nil)
-    val monitor: MetricMonitor = new MetricMonitor(definition, new MonitorRepository)
+    val monitor: MetricMonitor = new MetricMonitor(definition)
 
     expect(new DateTime(2005, 6, 6, 6, 17 - (5 * granularity), 6, 0)) {monitor.calculateFlushBeforeDate(new DateTime(2005, 6, 6, 6, 17, 6, 0))}
   }
@@ -45,7 +45,7 @@ class MetricMonitorTest extends FunSuite {
   test("flush time calculation - granularity = 2 minutes") {
     val granularity = 2
     val definition: MetricDefinition = new MetricDefinition("test", Duration.standardMinutes(granularity), Nil)
-    val monitor: MetricMonitor = new MetricMonitor(definition, new MonitorRepository)
+    val monitor: MetricMonitor = new MetricMonitor(definition)
 
     expect(new DateTime(2005, 6, 6, 6, 17 - (5 * granularity), 6, 0)) {monitor.calculateFlushBeforeDate(new DateTime(2005, 6, 6, 6, 17, 6, 0))}
   }

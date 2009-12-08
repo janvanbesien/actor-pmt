@@ -13,7 +13,11 @@ class MonitorAgent(val metricsConfiguration:List[MetricDefinition]) {
     val repository = new MonitorRepository
 
     for (derivedMetricDefinition <- derivedMetricDefinitions) {
-      repository.register(new MetricMonitor(derivedMetricDefinition, repository))
+      val monitor: MetricMonitor = new MetricMonitor(derivedMetricDefinition)
+      repository.register(monitor)
+      // register all monitors depending on this monitor as listeners
+      // TODO: isn't this introducing some kind of dependency on the creation order of providers/monitors?
+      repository.findMonitorsDependingOn(derivedMetricDefinition).foreach(dependantMonitor => monitor.registerDependant(dependantMonitor))
     }
 
     return repository
