@@ -5,14 +5,14 @@ import org.joda.time.{DateTime, Interval, Duration}
 import java.util.concurrent.{TimeUnit, CountDownLatch}
 import org.scalatest.FunSuite
 import org.junit.runner.RunWith
-import org.scalatest.junit.{JUnitRunner, JUnit3Suite}
-
+import org.scalatest.junit.{JUnitRunner}
 /**
  * @author <a href="mailto:jvb@newtec.eu">Jan Van Besien</a>
  */
 @RunWith(classOf[JUnitRunner])
 class MetricMonitorTest extends FunSuite {
-  test("calculatedAllExpectedProviderIntervals") {
+
+  test("calculated all expected provider intervals") {
     val oneSecond = Duration.standardSeconds(1)
     val twoSeconds = Duration.standardSeconds(2)
     val fourSeconds = Duration.standardSeconds(4)
@@ -31,7 +31,7 @@ class MetricMonitorTest extends FunSuite {
     }
   }
 
-  test("allDependenciesReceived") {
+  test("metrics for one derived metric definition are available when its single source metrics are available") {
     val source = new MetricDefinition("source", Duration.standardMinutes(1), Nil)
     val derived = new MetricDefinition("derived", Duration.standardMinutes(2), source :: Nil)
 
@@ -52,7 +52,6 @@ class MetricMonitorTest extends FunSuite {
     // register a listener with the monitor
     class TestProviderListener extends ProviderListener {
       def processMetricAvailableMessage(message: MetricAvailableMessage) = {
-        // TODO: assert that I come here once, and with the expected metrics (interval)
         if (message.metrics.interval == expectedInterval)
           expectedMetricIntervalReceived.countDown
         else
@@ -70,7 +69,7 @@ class MetricMonitorTest extends FunSuite {
       new DateTime)
 
     // monitor should not have provided anything, because not everything is received yet
-    //    fail("TODO")
+    expect(expectedMetricIntervalReceived.getCount) {1}
 
     // pretend another source metric to be available
     monitor ! MetricAvailableMessage(
@@ -81,9 +80,6 @@ class MetricMonitorTest extends FunSuite {
       new DateTime)
 
     // now the monitor should have provided a metric
-    Thread.sleep(1000)
-    println("done")
-
     assert(expectedMetricIntervalReceived.await(1, TimeUnit.SECONDS))
   }
 
