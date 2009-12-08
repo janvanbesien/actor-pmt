@@ -2,7 +2,6 @@ package be.jvb.actorpmt
 
 import scala.collection._
 import org.scala_tools.time.Imports._
-
 /**
  * A monitor is a provider listener (and calculates derived metric when receiving metrics from a provider) and a provider in itself
  * (providing the calculated derived metrics to other monitors)
@@ -11,13 +10,13 @@ class MetricMonitor(val metricDefinition: MetricDefinition, val repository: Moni
 {
   /**keep a collection of all received metrics, per monitor interval they are accounted in (multiple entries possible),
    * per metric definition we depend on */
-  private val received: mutable.Map[MetricDefinition, mutable.MultiMap[Interval, Metrics]] =
-    new mutable.HashMap[MetricDefinition, mutable.MultiMap[Interval, Metrics]]
+  private val receivedMetricsPerIntervalPerType: mutable.Map[MetricDefinition, mutable.MultiMap[Interval, Metrics]] =
+  new mutable.HashMap[MetricDefinition, mutable.MultiMap[Interval, Metrics]]
 
   {
     // initialize the map with received metrics with an empty entry per metric definition that we depend on
     for (dependency <- metricDefinition.dependencies) {
-      received.put(dependency, new mutable.HashMap[Interval, mutable.Set[Metrics]] with mutable.MultiMap[Interval, Metrics])
+      receivedMetricsPerIntervalPerType.put(dependency, new mutable.HashMap[Interval, mutable.Set[Metrics]] with mutable.MultiMap[Interval, Metrics])
     }
 
     // register all monitors depending on us as listeners of ourselves (TODO: is this the proper place to do it?)
@@ -27,23 +26,18 @@ class MetricMonitor(val metricDefinition: MetricDefinition, val repository: Moni
   def dependencies = metricDefinition.dependencies
 
   def processMetricAvailableMessage(receivedMessage: MetricAvailableMessage) = {
-    val alreadyReceivedMetricsOfThisType: mutable.MultiMap[Interval, Metrics] = received.get(receivedMessage.metrics.definition).get
-
-    // TODO: cleanup old stuff from the received collection...
-
     val accountingInterval = calculateIntervalInWhichToAccount(receivedMessage)
-    println("monitor [" + metricDefinition + "] received something about [" + receivedMessage.metrics.interval + "] which it accounts in monitor interval [" + accountingInterval + "]")
+    println("monitor [" + metricDefinition + "] received something about [" + receivedMessage.metrics.interval +
+            "] which it accounts in monitor interval [" + accountingInterval + "]")
 
-    // store the metrics with other metrics of this type, in the corresponding monitor interval
-    alreadyReceivedMetricsOfThisType.add(accountingInterval, receivedMessage.metrics)
+    accountReceivedMetrics(accountingInterval, receivedMessage.metrics)
 
-    // check if we received all dependencies in this interval
     if (allDependenciesReceived(accountingInterval)) {
       println("monitor [" + metricDefinition + "] received all its dependencies at [" + new DateTime + "], calculating and providing metrics")
 
       provideMetrics(new DateTime, calculateMetrics(receivedMessage.metrics, accountingInterval))
-      // flush all metrics of this interval (of any type)
-      received.values.foreach(metricsPerMonitorInterval => metricsPerMonitorInterval - accountingInterval)
+      flushMetricsInInterval(accountingInterval)
+      flushMetricsOlderThen(calculateFlushBeforeDate(accountingInterval.getStart))
     } else {
       println("monitor [" + metricDefinition + "] didn't receive all its dependencies at [" + new DateTime + "]")
     }
@@ -55,10 +49,40 @@ class MetricMonitor(val metricDefinition: MetricDefinition, val repository: Moni
     return new Interval(accountingIntervalStart, accountingIntervalStart + metricDefinition.granularity)
   }
 
+  def accountReceivedMetrics(accountingInterval: Interval, metrics: Metrics) = {
+    val alreadyReceivedMetricsOfThisType: mutable.MultiMap[Interval, Metrics] = receivedMetricsPerIntervalPerType.get(metrics.definition).get
+    // store the metrics with other metrics of this type, in the corresponding monitor interval
+    alreadyReceivedMetricsOfThisType.add(accountingInterval, metrics)
+  }
+
+  def flushMetricsInInterval(interval: Interval) = {
+    val receivedMetricsPerIntervalForAllTypes = receivedMetricsPerIntervalPerType.values
+    receivedMetricsPerIntervalForAllTypes.foreach((metricsPerInterval: mutable.MultiMap[Interval, Metrics]) => metricsPerInterval - interval)
+  }
+
+  def flushMetricsOlderThen(reference: DateTime) = {
+    val receivedMetricsPerIntervalForAllTypes = receivedMetricsPerIntervalPerType.values
+    receivedMetricsPerIntervalForAllTypes.foreach(
+      (metricsPerInterval: mutable.MultiMap[Interval, Metrics]) => {
+        val sizeBefore = metricsPerInterval.size
+        metricsPerInterval.retain {case (interval, metrics) => interval.isAfter(reference)}
+        println("flushed [" + (sizeBefore - metricsPerInterval.size) + "] intervals")
+      }
+      )
+  }
+
+  def calculateFlushBeforeDate(reference: DateTime): DateTime = {
+    val nMonitorIntervalsToRetain = 5
+    var result = reference
+    for (i <- 1 to 5)
+      result = result.minus(metricDefinition.granularity)
+    result
+  }
+
   // check if all dependencies are received in the given interval, for all expected periods!!!
   def allDependenciesReceived(monitorInterval: Interval): Boolean = {
     // loop through all maps of already received metrics for all metric definitions we depend on
-    for ((dependency, metricsPerMonitorInterval) <- received.elements) {
+    for ((dependency, metricsPerMonitorInterval) <- receivedMetricsPerIntervalPerType.elements) {
       val alreadyReceivedMetricsInMonitorInterval = metricsPerMonitorInterval.get(monitorInterval)
 
       alreadyReceivedMetricsInMonitorInterval match {
@@ -68,7 +92,7 @@ class MetricMonitor(val metricDefinition: MetricDefinition, val repository: Moni
 
         case Some(receivedMetrics) => { // something received, check if everything is received
           // calculate the intervals that should be available for this dependency
-          val expectedProviderIntervals = MetricMonitor.calculatedAllExpectedProviderIntervals(dependency.granularity, monitorInterval)
+          val expectedProviderIntervals = calculatedAllExpectedProviderIntervals(dependency.granularity, monitorInterval)
           println("monitor [" + metricDefinition + "] expects [" + dependency + "] in intervals [" + expectedProviderIntervals + "] and has [" + receivedMetrics + "]")
           // check if a metric was received for all expected intervals
           // (filter expected metrics from receivedMetrics and if that list is smaller than what we expect, it is not complete)
@@ -81,14 +105,6 @@ class MetricMonitor(val metricDefinition: MetricDefinition, val repository: Moni
 
     return true
   }
-
-  def calculateMetrics(sourceMetrics: Metrics, accountingInterval: Interval): Metrics = {
-    // for now we just multiply every value by two
-    return new Metrics(metricDefinition, immutable.Map() ++ sourceMetrics.valuesPerManagedObject.map {case (key, value) => (key, value * 2)}, accountingInterval)
-  }
-}
-
-object MetricMonitor {
 
   /**
    * Generate a list of all intervals of a duration = providerGranularity that fit within the monitorInterval.
@@ -107,4 +123,13 @@ object MetricMonitor {
     return result.toList
   }
 
+  def calculateMetrics(sourceMetrics: Metrics, accountingInterval: Interval): Metrics = {
+    // for now we just multiply every value by two
+    return new Metrics(metricDefinition, immutable.Map() ++ sourceMetrics.valuesPerManagedObject.map {
+      case (key, value) => (key, value * 2)
+    }, accountingInterval)
+  }
+
+
 }
+

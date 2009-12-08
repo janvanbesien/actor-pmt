@@ -152,4 +152,8 @@ class MetricMonitorMetricsAvailabilityTest extends FunSuite {
     assert(secondIntervalReceived.await(1, TimeUnit.SECONDS))
   }
 
+  test("late arriving source metrics don't trigger derived metric availability if they are so " +
+          "late that the other required source metrics were already cleaned up") {
+    fail("todo")
+  }
 }
