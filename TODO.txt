@@ -3,3 +3,6 @@
 - try to get some real performance measurements into it (and look at run time threading behavior with yourkit)
 - add real metric calculation based on actual formula's (parser/combinator?) or simply hard coded in metric definition
 - read real metrics.xml or use a custom DSL ?
+- use akka and experiment with an implementation in Java... might be necessary to get this prototype accepted or real?
+- do I need to build some kind of "recovery" into the providers, in case the pmt was down for a while?
+- do I need to foresee something to check if a provider sends a message that it also gets processed? Do I need to retry if it doesn't?

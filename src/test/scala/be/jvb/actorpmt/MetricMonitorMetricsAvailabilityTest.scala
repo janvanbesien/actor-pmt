@@ -156,4 +156,9 @@ class MetricMonitorMetricsAvailabilityTest extends FunSuite {
           "late that the other required source metrics were already cleaned up") {
     fail("todo")
   }
+
+  test("if the pmt was down for some time, we will actually need some sort of recovery (monitors themselves could go back in time, and some mechanism to know how far back they have to go?)") {
+    fail("todo")
+  }
+
 }
