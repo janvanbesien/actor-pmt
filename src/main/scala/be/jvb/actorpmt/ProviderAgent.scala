@@ -9,6 +9,7 @@ class ProviderAgent(val metricsConfiguration: List[MetricDefinition], val monito
   }
 
   private def makeProviders(monitors: MonitorRepository, sourceMetricDefinitions: List[MetricDefinition]): List[MetricProviderScanner] = {
+    // TODO: in the real pmt, there is no provider per source metric definition but per sub system, and one provider providers multiple source metrics...
     for (sourceMetricDefinition <- sourceMetricDefinitions) yield {
       new MetricProviderScanner(sourceMetricDefinition)
     }

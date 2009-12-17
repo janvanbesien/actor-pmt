@@ -1,6 +1,6 @@
 - add something like accumulated volume providers (w/o cache!)
 - repository idea also for providers?
-- try to get some real performance measurements into it (and look at run time threading behavior with yourkit)
+- try to get some real performance measurements into it (and look at run time threading behavior with yourkit) -> make metricproviderscanner abstract and provide an implementation which reads lots of data (from csv or in memory?) and make sure the monitors actually have some work calculating the metrics...
 - add real metric calculation based on actual formula's (parser/combinator?) or simply hard coded in metric definition
 - read real metrics.xml or use a custom DSL ?
 - use akka and experiment with an implementation in Java... might be necessary to get this prototype accepted or real?

@@ -1,6 +1,7 @@
 package be.jvb.actorpmt
 
 import org.joda.time.Duration
+
 object Main {
   def main(args: Array[String]) {
     println("starting")
@@ -14,8 +15,8 @@ object Main {
     val m6 = new MetricDefinition("m6", new Duration(2000L), m4 :: Nil)
     val m7 = new MetricDefinition("m7", new Duration(5000L), m1 :: Nil)
 
-    //    val metricDefinition = m1 :: m2 :: m3 :: m4 :: m5 :: m6 :: Nil
-    val metricsConfiguration = m1 :: m2 :: m3 :: Nil
+    val metricsConfiguration = m1 :: m2 :: m3 :: m4 :: m5 :: m6 :: Nil
+    //    val metricsConfiguration = m1 :: m2 :: m3 :: Nil
 
     val monitorAgent: MonitorAgent = new MonitorAgent(metricsConfiguration)
     val monitors: MonitorRepository = monitorAgent.start
