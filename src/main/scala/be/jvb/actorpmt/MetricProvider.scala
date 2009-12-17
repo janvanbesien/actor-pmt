@@ -5,14 +5,19 @@ import org.joda.time.{DateTime}
 import actors.Actor
 
 trait MetricProvider {
-  val metricDefinition: MetricDefinition
+  val name: String
 
-  var dependants: List[Actor] = Nil // TODO: rename to listeners? and shouldn't I check that it's an actor of the correc type?
+  val providedMetricDefinitions: List[MetricDefinition]
 
-  val mfs = new MetricFileSystem
+  // TODO: volatile?
+  private var dependants: List[Actor] = Nil // TODO: rename to listeners? and shouldn't I check that it's an actor of the correct type?
+
+  private val mfs = new MetricFileSystem
+
+  def start: Any
 
   def provideMetrics(time: DateTime, providedMetrics: Metrics) = {
-    println("provider [" + metricDefinition.name + "] provides metrics at [" + time + "] for interval [" + providedMetrics.interval + "]")
+    println("provider [" + name + "] provides metrics at [" + time + "] for interval [" + providedMetrics.interval + "]")
 
     saveMetrics(providedMetrics)
     notifyDependants(time, providedMetrics)
@@ -29,7 +34,7 @@ trait MetricProvider {
     }
   }
 
-  def registerDependant(dependant : Actor) = {
+  def registerDependant(dependant: Actor) = {
     dependants = dependant :: dependants
   }
 }

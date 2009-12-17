@@ -14,10 +14,15 @@ class MetricMonitor(val metricDefinition: MetricDefinition) extends ProviderList
   private val receivedMetricsPerIntervalPerType: mutable.Map[MetricDefinition, mutable.MultiMap[Interval, Metrics]] =
   new mutable.HashMap[MetricDefinition, mutable.MultiMap[Interval, Metrics]]
 
+  // TODO: this looks a bit messy because its not in a constructor... or is that just my java background?
   // initialize the map with received metrics with an empty entry per metric definition that we depend on
   for (dependency <- metricDefinition.dependencies) {
     receivedMetricsPerIntervalPerType.put(dependency, new mutable.HashMap[Interval, mutable.Set[Metrics]] with mutable.MultiMap[Interval, Metrics])
   }
+
+  val providedMetricDefinitions = metricDefinition :: Nil
+
+  val name = "mon {" + metricDefinition + "}"
 
   def dependencies = metricDefinition.dependencies
 

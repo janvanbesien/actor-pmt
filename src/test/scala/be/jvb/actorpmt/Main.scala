@@ -21,10 +21,14 @@ object Main {
     val monitorAgent: MonitorAgent = new MonitorAgent(metricsConfiguration)
     val monitors: MonitorRepository = monitorAgent.start
 
-    val providerAgent: ProviderAgent = new ProviderAgent(metricsConfiguration, monitors)
+    val providerAgent: ProviderAgent = new MockedProviderAgent(filterOutSourceMetricDefinitions(metricsConfiguration), monitors)
     providerAgent.start
 
     println("started")
+  }
+
+  private def filterOutSourceMetricDefinitions(allMetricDefinitions: List[MetricDefinition]) = {
+    allMetricDefinitions.filter(mDefinition => mDefinition.dependencies.isEmpty)
   }
 
 
