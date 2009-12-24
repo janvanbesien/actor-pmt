@@ -3,8 +3,7 @@ package be.jvb.actorpmt
 /**
  * @author <a href="mailto:jvb@newtec.eu">Jan Van Besien</a>
  */
-class MonitorAgent(val metricsConfiguration:List[MetricDefinition]) {
-
+class MonitorAgent(val metricsConfiguration: List[MetricDefinition]) {
   private def filterOutDerivedMetricDefinitions(allMetricDefinitions: List[MetricDefinition]) = {
     allMetricDefinitions.filter(mDefinition => !mDefinition.dependencies.isEmpty)
   }
@@ -17,13 +16,15 @@ class MonitorAgent(val metricsConfiguration:List[MetricDefinition]) {
       repository.register(monitor)
       // register all monitors depending on this monitor as listeners
       // TODO: isn't this introducing some kind of dependency on the creation order of providers/monitors?
-      repository.findMonitorsDependingOn(derivedMetricDefinition).foreach(dependantMonitor => monitor.registerDependant(dependantMonitor))
+      repository.findMonitorsDependingOn(derivedMetricDefinition).foreach {
+        dependantMonitor => monitor.registerDependant(dependantMonitor, derivedMetricDefinition)
+      }
     }
 
     return repository
   }
 
-  def start : MonitorRepository = {
+  def start: MonitorRepository = {
     val monitors: MonitorRepository = makeMonitors(filterOutDerivedMetricDefinitions(metricsConfiguration))
     monitors.allMonitors.foreach(_.start)
     return monitors

@@ -15,7 +15,7 @@ abstract class ProviderAgent(val monitors: MonitorRepository) {
     // register all monitors depending on metrics provided by these provider as listeners
     for (provider <- providers) {
       for (providedMetric <- provider.providedMetricDefinitions) {
-        monitors.findMonitorsDependingOn(providedMetric).foreach(monitor => provider.registerDependant(monitor))
+        monitors.findMonitorsDependingOn(providedMetric).foreach(monitor => provider.registerDependant(monitor, providedMetric))
       }
     }
 

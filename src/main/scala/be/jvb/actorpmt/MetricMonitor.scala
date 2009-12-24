@@ -18,6 +18,7 @@ class MetricMonitor(val metricDefinition: MetricDefinition) extends ProviderList
   // initialize the map with received metrics with an empty entry per metric definition that we depend on
   for (dependency <- metricDefinition.dependencies) {
     receivedMetricsPerIntervalPerType.put(dependency, new mutable.HashMap[Interval, mutable.Set[Metrics]] with mutable.MultiMap[Interval, Metrics])
+    println("initialized received map with placeholder for [" + dependency + "] in [" + this + "]")
   }
 
   val providedMetricDefinitions = metricDefinition :: Nil
@@ -27,21 +28,30 @@ class MetricMonitor(val metricDefinition: MetricDefinition) extends ProviderList
   def dependencies = metricDefinition.dependencies
 
   def processMetricAvailableMessage(receivedMessage: MetricAvailableMessage) = {
-    val accountingInterval = calculateIntervalInWhichToAccount(receivedMessage)
-    println("monitor [" + metricDefinition + "] received something about [" + receivedMessage.metrics.interval +
-            "] which it accounts in monitor interval [" + accountingInterval + "]")
+    if (expected(receivedMessage)) {
+      val accountingInterval = calculateIntervalInWhichToAccount(receivedMessage)
+      println("monitor [" + metricDefinition + "] received something about [" + receivedMessage.metrics.interval +
+              "] which it accounts in monitor interval [" + accountingInterval + "]")
 
-    accountReceivedMetrics(accountingInterval, receivedMessage.metrics)
+      accountReceivedMetrics(accountingInterval, receivedMessage.metrics)
 
-    if (allDependenciesReceived(accountingInterval)) {
-      println("monitor [" + metricDefinition + "] received all its dependencies at [" + new DateTime + "], calculating and providing metrics")
+      if (allDependenciesReceived(accountingInterval)) {
+        println("monitor [" + metricDefinition + "] received all its dependencies at [" + new DateTime + "], calculating and providing metrics")
 
-      provideMetrics(new DateTime, calculateMetrics(receivedMessage.metrics, accountingInterval))
-      flushMetricsInInterval(accountingInterval)
-      flushMetricsOlderThen(calculateFlushBeforeDate(accountingInterval.getStart))
+        provideMetrics(new DateTime, calculateMetrics(receivedMessage.metrics, accountingInterval))
+        flushMetricsInInterval(accountingInterval)
+        flushMetricsOlderThen(calculateFlushBeforeDate(accountingInterval.getStart))
+      } else {
+        println("monitor [" + metricDefinition + "] didn't receive all its dependencies at [" + new DateTime + "]")
+      }
     } else {
-      println("monitor [" + metricDefinition + "] didn't receive all its dependencies at [" + new DateTime + "]")
+      Console.err.println("WARNING: unexpected metric type [" + receivedMessage.metrics.definition + "] in [" + this + "]")
     }
+  }
+
+  def expected(message: MetricAvailableMessage): Boolean = {
+    // expected if we have the metric definition registered as dependency
+    return receivedMetricsPerIntervalPerType.contains(message.metrics.definition)
   }
 
   def calculateIntervalInWhichToAccount(receivedMessage: MetricAvailableMessage): Interval = {
@@ -51,6 +61,10 @@ class MetricMonitor(val metricDefinition: MetricDefinition) extends ProviderList
   }
 
   def accountReceivedMetrics(accountingInterval: Interval, metrics: Metrics) = {
+    receivedMetricsPerIntervalPerType.get(metrics.definition) match {
+      case None => println("accounting something of type [" + metrics.definition + "] in [" + this + "]")
+      case _ => () // skip
+    }
     val alreadyReceivedMetricsOfThisType: mutable.MultiMap[Interval, Metrics] = receivedMetricsPerIntervalPerType.get(metrics.definition).get
     // store the metrics with other metrics of this type, in the corresponding monitor interval
     alreadyReceivedMetricsOfThisType.add(accountingInterval, metrics)
@@ -131,6 +145,7 @@ class MetricMonitor(val metricDefinition: MetricDefinition) extends ProviderList
     }, accountingInterval)
   }
 
+  override def toString() = "mon {" + metricDefinition + "}"
 
 }
 
