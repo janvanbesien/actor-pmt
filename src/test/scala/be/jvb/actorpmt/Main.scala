@@ -2,6 +2,9 @@ package be.jvb.actorpmt
 
 import org.joda.time.Duration
 
+/**
+ * Some "manual test code"
+ */
 object Main {
   def main(args: Array[String]) {
     println("starting")

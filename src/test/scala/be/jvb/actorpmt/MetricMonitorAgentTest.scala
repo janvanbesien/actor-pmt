@@ -10,7 +10,7 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class MetricMonitorAgentTest extends FunSuite {
 
-  test("order of monitor creation doesn't matter to setup dependencies correctly") {
+  ignore("order of monitor creation doesn't matter to setup dependencies correctly") {
     fail("todo")
   }
 }
