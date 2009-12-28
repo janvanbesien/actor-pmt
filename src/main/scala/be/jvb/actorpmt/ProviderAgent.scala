@@ -9,8 +9,10 @@ abstract class ProviderAgent(val monitors: MonitorRepository) {
    */
   def makeProviders(): List[MetricProvider]
 
+  private var providers: Option[List[MetricProvider]] = None
+
   def start = {
-    val providers: List[MetricProvider] = makeProviders()
+    providers = Some(makeProviders())
 
     // register all monitors depending on metrics provided by these provider as listeners
     for (provider <- providers) {
@@ -20,5 +22,12 @@ abstract class ProviderAgent(val monitors: MonitorRepository) {
     }
 
     providers.foreach(_.start)
+  }
+
+  def findProviderByProvidedMetricDefinition(metricDefinition: MetricDefinition) : Option[MetricProvider] = {
+    providers match {
+      case Some(p:List[MetricProvider]) => p.find(_.providedMetricDefinitions.contains(metricDefinition))
+      case None => None
+    }
   }
 }
