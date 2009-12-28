@@ -5,5 +5,8 @@
 - read real metrics.xml or use a custom DSL ?
 - use akka and experiment with an implementation in Java... might be necessary to get this prototype accepted or real?
 - do I need to build some kind of "recovery" into the providers, in case the pmt was down for a while?
-- do I need to foresee something to check if a provider sends a message that it also gets processed? Do I need to retry if it doesn't?
+- do I need to foresee something to check if a provider sends a message that it also gets processed (using !! and futures?)? Do I need to retry if it doesn't?
 - try to make prototype of a "on demand metric generation" kind of use case
+- dependency injection (cake pattern?)
+- logging
+- configuration with some scala config library
